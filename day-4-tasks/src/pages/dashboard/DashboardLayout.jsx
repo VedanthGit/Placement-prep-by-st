@@ -1,9 +1,16 @@
-import React from 'react'
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../utils/auth";
 
 const DashboardLayout = () => {
-  return (
-    <div>DashboardLayout</div>
-  )
-}
+	const navigate = useNavigate();
 
-export default DashboardLayout
+	const handleLogout = () => {
+		logout();
+
+		navigate("/login");
+	};
+	return <div>DashboardLayout</div>;
+};
+
+export default DashboardLayout;

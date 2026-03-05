@@ -1,9 +1,9 @@
-import React from 'react'
+import React from "react";
+import { isAuthenticated } from "../utils/auth";
+import { Navigate, Outlet } from "react-router-dom";
 
 const ProtectedRoute = () => {
-  return (
-    <div>ProtectedRoute</div>
-  )
-}
+	return isAuthenticated() ? <Outlet /> : <Navigate to="/login" replace />;
+};
 
-export default ProtectedRoute
+export default ProtectedRoute;
