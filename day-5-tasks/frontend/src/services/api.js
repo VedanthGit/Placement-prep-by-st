@@ -14,15 +14,21 @@ api.interceptors.request.use((config) => {
 	return config;
 });
 
-api.interceptors.response.use((response) => response,
-    error => {
-        if (error.response?.status === 401){
-            localStorage.removeItem("token")
-            window.location.href = "/login"
-        }
+api.interceptors.response.use(
+	(response) => response,
 
-        return Promise.reject(error)
-    }
+	(error) => {
+		if (error.response?.status === 401) {
+			localStorage.removeItem("token");
+			window.location.href = "/login";
+		}
+
+		if (error.response?.status === 500) {
+			alert("Something went wrong. Please try again.");
+		}
+
+		return Promise.reject(error);
+	},
 );
 
-export default api
+export default api;
