@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import api from "../services/api";
 
 const Search = () => {
@@ -10,7 +10,7 @@ const Search = () => {
 
 		const controller = new AbortController();
 
-		const fetchSearch = async () => {
+		const fetchData = async () => {
 			try {
 				const res = await api.get(`/users?q=${query}`, {
 					signal: controller.signal,
@@ -24,18 +24,14 @@ const Search = () => {
 			}
 		};
 
-		fetchSearch();
+		fetchData();
 
 		return () => controller.abort();
 	}, [query]);
 
 	return (
 		<div>
-			<input
-				value={query}
-				onChange={(e) => setQuery(e.target.value)}
-				placeholder="Search user"
-			/>
+			<input onChange={(e) => setQuery(e.target.value)} />
 
 			{results.map((r) => (
 				<div key={r.id}>{r.name}</div>

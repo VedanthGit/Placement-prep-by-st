@@ -15,8 +15,7 @@ api.interceptors.request.use((config) => {
 });
 
 api.interceptors.response.use(
-	(response) => response,
-
+	(res) => res,
 	(error) => {
 		if (error.response?.status === 401) {
 			localStorage.removeItem("token");
@@ -24,7 +23,7 @@ api.interceptors.response.use(
 		}
 
 		if (error.response?.status === 500) {
-			alert("Something went wrong. Please try again.");
+			alert("Server error. Try again later.");
 		}
 
 		return Promise.reject(error);

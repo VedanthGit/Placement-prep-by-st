@@ -1,4 +1,5 @@
 import express from "express";
+import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -7,24 +8,33 @@ let users = [
 	{ id: 2, name: "Bob" },
 ];
 
-router.get("/", (req, res) => {
+router.get("/", authMiddleware, (req, res) => {
 	res.json(users);
 });
 
-router.post("/", (req, res) => {
-	const user = { id: Date.now(), name: req.body.name };
+router.post("/", authMiddleware, (req, res) => {
+	if (!req.body.name) {
+		return res.status(400).json({ message: "Name required" });
+	}
+
+	const user = {
+		id: Date.now(),
+		name: req.body.name,
+	};
+
 	users.push(user);
-	res.json(user);
+	res.status(201).json(user);
 });
 
-router.patch("/:id", (req, res) => {
+router.patch("/:id", authMiddleware, (req, res) => {
 	users = users.map((u) =>
 		u.id == req.params.id ? { ...u, name: req.body.name } : u,
 	);
-	res.json({ message: "updated" });
+
+	res.json({ message: "Updated" });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", authMiddleware, (req, res) => {
 	users = users.filter((u) => u.id != req.params.id);
 	res.json({ message: "Deleted" });
 });
